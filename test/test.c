@@ -1,6 +1,8 @@
 #include <stdio.h>
 
+#define ARRAYLIST_IMPLEMENTATION
 #include "arraylist.h"
+#undef ARRAYLIST_IMPLEMENTATION
 
 bool test_match(Arraylist* al, int answer_key[], int answer_key_size) {
 	if(al_len(al) != answer_key_size) {

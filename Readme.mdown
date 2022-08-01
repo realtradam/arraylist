@@ -1,3 +1,17 @@
 # Arraylist
 
-Generic arraylist implementation in C. WIP.
+Generic arraylist single header implementation in C.  
+
+## How to use
+Define it in your main file like so:
+```
+#define ARRAYLIST_IMPLEMENTATION
+#include "arraylist.h"
+#undef ARRAYLIST_IMPLEMENTATION
+```
+and for any other files you would also like to use it in simply do
+```
+#include "arraylist.h"
+```
+---
+Define `ARRAYLIST_DEFAULT_SIZE` to a value of your choice to change the default initialized size(number of elements) of an arraylist.

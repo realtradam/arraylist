@@ -1,15 +1,37 @@
+#ifndef ARRAYLIST_H
+#define ARRAYLIST_H
 
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include "arraylist.h"
+#include <stdbool.h>
 
 #define PUBLIC /* nothing */
 #define PRIVATE static
 
 // size doubles whenever it is exceeded
+#ifndef ARRAYLIST_DEFAULT_SIZE
 #define ARRAYLIST_DEFAULT_SIZE 4
+#endif
+
 //#define ARRAYLIST_DEBUG
+
+
+typedef struct array_list_type Arraylist;
+
+Arraylist* al_create(int type_size);
+void al_free(Arraylist* al);
+void* al_access(Arraylist* al, int position);
+bool al_push(Arraylist* al, void* item);
+void al_delete_last(Arraylist* al);
+bool al_delete_at(Arraylist *al, int position);
+bool al_allocate_at_least(Arraylist* al, int size);
+int al_len(Arraylist* al);
+
+// give 2 indexes, moves source to overwrite the target
+bool al_overwrite_and_delete(Arraylist* al, int source, int target);
+
+#ifdef ARRAYLIST_IMPLEMENTATION
 
 struct array_list_type {
 	void* data; // the arraylist data
@@ -44,8 +66,8 @@ bool al_delete_at(Arraylist *al, int position) {
 	}
 	else if((position >= 0) && (position < al->num_elements)) {
 		memcpy(
-				al->data + (position * al->element_size),
-				al->data + ((position + 1) * al->element_size),
+				(char*)al->data + (position * al->element_size),
+				(char*)al->data + ((position + 1) * al->element_size),
 				al->element_size * (al->num_elements - position)
 			  );
 		al->num_elements -= 1;
@@ -79,7 +101,7 @@ bool al_allocate_at_least(Arraylist* al, int size) {
 
 
 Arraylist* al_create(int type_size) {
-	Arraylist* al = malloc(sizeof(Arraylist));
+	Arraylist* al = (Arraylist*)malloc(sizeof(Arraylist));
 
 	al->data = malloc(sizeof(type_size) * ARRAYLIST_DEFAULT_SIZE);
 	al->element_size = type_size;
@@ -105,7 +127,7 @@ bool al_push(Arraylist* al, void* item) {
 #endif
 	}
 	memcpy(
-			al->data + (al->num_elements * al->element_size),
+			(char*)al->data + (al->num_elements * al->element_size),
 			item,
 			al->element_size
 		  );
@@ -116,7 +138,7 @@ bool al_push(Arraylist* al, void* item) {
 void* al_access(Arraylist* al, int position) {
 	if((position >= al->num_elements) || (position < 0))
 		return NULL;
-	return al->data + (al->element_size * position);
+	return (char*)al->data + (al->element_size * position);
 }
 
 bool al_overwrite_and_delete(Arraylist* al, int source, int target) {
@@ -126,11 +148,13 @@ bool al_overwrite_and_delete(Arraylist* al, int source, int target) {
 		return false;
 	}
 	memcpy(
-			al->data + (target * al->element_size),
-			al->data + (source * al->element_size),
+			(char*)al->data + (target * al->element_size),
+			(char*)al->data + (source * al->element_size),
 			al->element_size
 			);
 	return al_delete_at(al, source);
 }
 
 
+#endif
+#endif
