@@ -1,17 +1,11 @@
 # Arraylist
 
-Generic arraylist single header implementation in C.  
+Generic arraylist single header implementation in ~~C~~ Rust.  
 
 ## How to use
 Define it in your main file like so:
 ```
-#define ARRAYLIST_IMPLEMENTATION
-#include "arraylist.h"
-#undef ARRAYLIST_IMPLEMENTATION
-```
-and for any other files you would also like to use it in simply do
-```
-#include "arraylist.h"
+use arraylist::*;
 ```
 ---
-Define `ARRAYLIST_DEFAULT_SIZE` to a value of your choice to change the default initialized size(number of elements) of an arraylist.
+~~Define `ARRAYLIST_DEFAULT_SIZE` to a value of your choice to change the default initialized size(number of elements) of an arraylist.~~ Dynamically sized.
